@@ -1,26 +1,27 @@
-TARGET = orderbook
 CXX = g++
-CXXFLAGS = -Wall -std=c++11
-SRC_DIR = src
-BUILD_DIR = build
+CXXFLAGS = -std=c++11 -Wall
 
-SOURCES := $(wildcard $(SRC_DIR)/*.cpp)
-OBJECTS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SOURCES))
+SRCDIR = src
+OBJDIR = obj
+BINDIR = bin
 
-all: $(BUILD_DIR) $(BUILD_DIR)/$(TARGET)
+EXECUTABLE = orderbook
+SOURCES = $(wildcard $(SRCDIR)/*.cpp)
+OBJECTS = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SOURCES))
 
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+$(BINDIR)/$(EXECUTABLE): $(OBJECTS) | $(BINDIR)
+	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $@
 
-$(BUILD_DIR)/$(TARGET): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
-
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
+$(BINDIR):
+	mkdir -p $(BINDIR)
+
 clean:
-	rm -f $(BUILD_DIR)/$(TARGET) $(OBJECTS)
+	rm -rf $(OBJDIR) $(BINDIR)
 
-rebuild: clean all
-
-.PHONY: all clean rebuild
+.PHONY: clean

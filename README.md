@@ -35,7 +35,7 @@ This application simulates an order book for buying and selling UAH (Ukrainian H
 
 5. Once compilation is successful, run the executable by executing:
     ```sh
-    cd build/
+    cd bin/
     ./orderbook.exe
 
 Follow the prompts to input user IDs, amounts in UAH, prices in USD per UAH, and specify whether it's a buy or sell order.
